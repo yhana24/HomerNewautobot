@@ -1,0 +1,22 @@
+entrypoint = "index.js"
+modules = ["nodejs-20"]
+hidden = [".config", "package-lock.json"]
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix", "package.json", "package-lock.json"]
+
+[nix]
+channel = "stable-23_05"
+
+[unitTest]
+language = "nodejs"
+
+[deployment]
+run = ["node", "index.js"]
+deploymentTarget = "gce"
+ignorePorts = false
+build = ["sh", "-c", "npm install express body-parser fca-unofficial"]
+
+[[ports]]
+localPort = 3000
+externalPort = 80
