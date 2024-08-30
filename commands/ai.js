@@ -24,7 +24,7 @@ module.exports = {
             }
 
             api.sendMessage(
-                `🤖 Homer AI Bot\n___________________\n${result}___________________\nDeveloped by Homer Rebatis`,
+                `🤖 Homer AI Bot\n______________________________________\n${result}\n______________________________________\nDeveloped by Homer Rebatis`,
                 event.threadID,
                 event.messageID
             );
