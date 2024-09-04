@@ -1,70 +1,62 @@
-const axios = require('axios');
+const axios = require("axios");
 
-async function gptConvoAPI(ask, id) {
+async function aic(q, uid) {
     try {
-        const response = await axios.get(`https://jonellccprojectapis10.adaptable.app/api/gptconvo?ask=${encodeURIComponent(ask)}&id=${id}`);
-        
-        if (response.data && response.data.response) {
-            return response.data.response;
-        } else {
-            return "Unexpected API response format. Please check the API or contact support.";
-        }
+        const response = await axios.get(`${global.NashBot.END}gpt4?askk=${encodeURIComponent(q)}&uid=${uid}`);
+        return response.data.gpt4;
     } catch (error) {
         console.error("Error fetching data:", error.message);
-        return "Failed to fetch data. Please try again later.";
+        return "ERROR! Use 𝐇𝐨𝐦𝐞𝐫 command. Example : Homer What is Love?";
     }
 }
 
 module.exports = {
-    name: "ai",
-    description: "Interact with GPT-3 conversational AI",
+    name: "ai2",
+    description: "Talk to GPT4 (conversational)",
     nashPrefix: false,
-    version: "1.0.0",
+    version: "1.0.2",
     role: 0,
     cooldowns: 5,
-    async execute(api, event, args) {
+    aliases: ["ai"],
+    execute(api, event, args, prefix) {
         const { threadID, messageID, senderID } = event;
-        const message = args.join(" ");
-
-        if (!message) return api.sendMessage("Please provide your question.\n\nExample: ai What is the solar system?", threadID, messageID);
+        let prompt = args.join(" ");
+        if (!prompt) return api.sendMessage("Please enter a prompt.", threadID, messageID);
+        
+        if (!global.handle) {
+            global.handle = {};
+        }
+        if (!global.handle.replies) {
+            global.handle.replies = {};
+        }
 
         api.sendMessage(
-            "𝙷𝙾𝙼𝙴𝚁 𝙰𝙸 𝚂𝙴𝙰𝚁𝙲𝙷𝙸𝙽𝙶 𝚃𝙷𝙴 𝙰𝙽𝚂𝚆𝙴𝚁...",
+            "[ 𝙲𝙾𝙽𝚅𝙴𝚁𝚂𝙰𝚃𝙸𝙾𝙽𝙰𝙻 𝙰𝙸 ]\n\n" +
+            "⏳ Searching for answer..." +
+            '\n\n[ 𝚃𝚢𝚙𝚎 "𝚌𝚕𝚎𝚒𝚛" 𝚝𝚘 𝚛𝚎𝚜𝚎𝚝 𝚝𝚑𝚎 𝚌𝚘𝚗𝚟𝚎𝚛𝚜𝚎𝚜𝚜𝚒𝚘𝚟𝚎 𝚠𝚒𝚝𝚑 𝙰𝙸 ]',
             threadID,
             async (err, info) => {
                 if (err) return;
                 try {
-                    if (event.type === "message_reply" && event.messageReply.attachments && event.messageReply.attachments[0]) {
-                        const attachment = event.messageReply.attachments[0];
-
-                        if (attachment.type === "photo") {
-                            const imageURL = attachment.url;
-                            const geminiUrl = `https://joncll.serv00.net/chat.php?ask=${encodeURIComponent(message)}&imgurl=${encodeURIComponent(imageURL)}`;
-                            const geminiResponse = await axios.get(geminiUrl);
-                            const { vision } = geminiResponse.data;
-
-                            if (vision) {
-                                return api.editMessage(
-                                    `•| 𝙷𝙾𝙼𝙴𝚁 𝙰𝙸 𝙱𝙾𝚃 𝚁𝙴𝙲𝙾𝙶𝙽𝙸𝚉𝙴 𝚃𝙷𝙴 𝙸𝙼𝙰𝙶𝙴 |•\n\n${vision}\n\n•| 𝙾𝚆𝙽𝙴𝚁 : 𝙷𝙾𝙼𝙴𝚁 𝚁𝙴𝙱𝙰𝚃𝙸𝚂 |•`,
-                                    info.messageID
-                                );
-                            } else {
-                                return api.sendMessage("🤖 Failed to recognize the image.", threadID, messageID);
-                            }
-                        }
-                    }
-
-                    const response = await gptConvoAPI(message, senderID);
+                    const response = await aic(prompt, senderID);
                     api.editMessage(
-                        `•| 𝙷𝙾𝙼𝙴𝚁 𝙰𝙸 𝙱𝙾𝚃 |•\n\n${response}\n\n•| 𝙾𝚆𝙽𝙴𝚁 : 𝙷𝙾𝙼𝙴𝚁 𝚁𝙴𝙱𝙰𝚃𝙸𝚂 |•`,
-                        info.messageID,
-                        threadID,
-                        messageID
+                        "[ 𝙲𝙾𝙽𝚅𝙴𝚁𝚂𝙰𝚃𝙸𝙾𝙽𝙰𝙻 𝙰𝙸 ]\n\n" +
+                        response +
+                        "\n\n[ 𝚁𝙀𝙋𝙇𝚈 𝚃𝙾 𝚃𝙷𝙸𝚂 𝙼𝙀𝚂𝚂𝙰𝙶𝙴 𝚃𝙾 𝙲𝙾𝙽𝚃𝙸𝙽𝚄𝙴 𝚃𝙷𝙴 𝙲𝙾𝙽𝚅𝙴𝚁𝚂𝙰𝚃𝙸𝙾𝙽 𝚆𝙸𝚃𝙷 𝙰𝙸 ]",
+                        info.messageID
                     );
-                } catch (error) {
-                    api.sendMessage("An error occurred while processing your request.", threadID, messageID);
+                    global.handle.replies[info.messageID] = {
+                        cmdname: module.exports.name,
+                        this_mid: info.messageID,
+                        this_tid: info.threadID,
+                        tid: threadID,
+                        mid: messageID,
+                    };
+                } catch (g) {
+                    api.sendMessage("Error processing your request: " + g.message, threadID);
                 }
             },
             messageID
         );
     },
+};
