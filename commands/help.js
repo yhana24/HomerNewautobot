@@ -16,7 +16,7 @@ module.exports = {
         pageNumber = isNaN(pageNumber) || pageNumber < 1 ? 1 : pageNumber;
 
         let commandList = "╔════ஜ۩۞۩ஜ═══╗\n\n";
-        commandList += `𝑯𝑒𝒓𝒆'𝒔 𝒕𝒉𝒆 𝒄𝒐𝒎𝒎𝒶𝒏𝒹 𝒍𝒊𝒔𝒕 - 𝑷𝒂𝒈𝒆 ${pageNumber}:\n\n`;
+        commandList += `𝗕𝗼𝘁𝘀𝗰𝗼𝗽𝗲 𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 - 𝑷𝒂𝒈𝒆 ${pageNumber}:\n\n`;
 
         const commandEntries = Array.from(commands.keys());
         const eventEntries = Array.from(events.keys());
