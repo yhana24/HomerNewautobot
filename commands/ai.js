@@ -11,7 +11,7 @@ async function aic(q, uid) {
 }
 
 module.exports = {
-    name: "ai2",
+    name: "chesca",
     description: "Talk to GPT4 (conversational)",
     nashPrefix: false,
     version: "1.0.2",
@@ -32,7 +32,7 @@ module.exports = {
 
         api.sendMessage(
             "[ 𝙲𝙾𝙽𝚅𝙴𝚁𝚂𝙰𝚃𝙸𝙾𝙽𝙰𝙻 𝙰𝙸 ]\n\n" +
-            "⏳ Searching for answer..." +
+            "⏳ Searching chesca for answer..." +
             '\n\n[ 𝚃𝚢𝚙𝚎 "𝚌𝚕𝚎𝚒𝚛" 𝚝𝚘 𝚛𝚎𝚜𝚎𝚝 𝚝𝚑𝚎 𝚌𝚘𝚗𝚟𝚎𝚛𝚜𝚎𝚜𝚜𝚒𝚘𝚟𝚎 𝚠𝚒𝚝𝚑 𝙰𝙸 ]',
             threadID,
             async (err, info) => {
